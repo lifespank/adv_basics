@@ -13,17 +13,7 @@ class ResultsScreen extends StatelessWidget {
   final List<String> chosenAnswers;
   final void Function() restartQuiz;
 
-  List<Map<String, Object>> getSummaryData() {
-    // final List<Map<String, Object>> summary = [];
-    // for (var i = 0; i < chosenAnswers.length; i++) {
-    //   summary.add({
-    //     'question_index': i,
-    //     'question': questions[i].text,
-    //     'correct_answer': questions[i].answers[0],
-    //     'user_answer': chosenAnswers[i],
-    //   });
-    // }
-    // return summary;
+  List<Map<String, Object>> get summaryData {
     final List<Map<String, Object>> summary = chosenAnswers
         .mapIndexed((index, userAnswer) => {
               'question_index': index,
@@ -37,9 +27,9 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final summaryData = getSummaryData();
+    final summaryDataCache = summaryData;
     final numTotalQuestions = questions.length;
-    final numCorrectQuestions = summaryData.fold(
+    final numCorrectQuestions = summaryDataCache.fold(
         0,
         (correctCount, element) =>
             element['correct_answer'] == element['user_answer']
@@ -62,7 +52,7 @@ class ResultsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-            QuestionsSummary(summaryData),
+            QuestionsSummary(summaryDataCache),
             const SizedBox(height: 30),
             OutlinedButton.icon(
               icon: const Icon(Icons.refresh),
